@@ -68,3 +68,4 @@ column in [docs/adapters.md](docs/adapters.md).
 ## License
 
 Not yet specified. Set `license` in `pyproject.toml` and add a `LICENSE` file before distributing.
+=======
