@@ -1,0 +1,48 @@
+# TEMPLATE. Pin the server's host key fingerprint (ssh-keyscan + ssh-keygen -lf) before activating.
+connector:
+  name: billing_files
+  type: sftp
+  version: 0.1.0
+  status: template
+
+connection:
+  host: sftp.example.internal
+  port: 22
+  username: svc_chusky-bridge
+  secret_ref: billing_sftp_password
+  root_directory: /outbound/billing
+  host_key_sha256: "SHA256:REPLACE_WITH_PINNED_FINGERPRINT"
+  timeout_seconds: 10
+  max_file_bytes: 5000000
+  max_rows: 500
+
+operations:
+  list_batch_files:
+    description: List billing batch files matching a pattern. Read-only.
+    mode: list_files
+    parameters: [pattern]
+    input_schema:
+      type: object
+      properties:
+        pattern: {type: string, pattern: "^[A-Za-z0-9_.\\-*?]{1,120}$"}
+      required: [pattern]
+    risk_level: low
+    read_only: true
+    requires_approval: false
+    required_scopes: [billing.batches.read]
+
+  read_batch_csv:
+    description: Read and parse one billing batch CSV file. Read-only.
+    mode: read_file
+    format: csv
+    delimiter: ","
+    parameters: [filename]
+    input_schema:
+      type: object
+      properties:
+        filename: {type: string, pattern: "^[A-Za-z0-9][A-Za-z0-9_.\\-]{0,199}$"}
+      required: [filename]
+    risk_level: low
+    read_only: true
+    requires_approval: false
+    required_scopes: [billing.batches.read]

@@ -1,0 +1,32 @@
+# TEMPLATE. Confirm the BAPI and its parameter names in SE37 on your release before activating.
+# Requires the SAP NW RFC SDK and pyrfc on the runtime (see docs/deployment.md).
+connector:
+  name: sap_ecc_materials
+  type: sap_rfc
+  version: 0.1.0
+  status: template
+
+connection:
+  ashost: sapecc.example.internal
+  sysnr: "00"
+  client: "100"
+  user: SVC_CHUSKY
+  secret_ref: sap_ecc_password
+  lang: EN
+
+operations:
+  get_material_detail:
+    description: Read master data for one material number. Read-only.
+    mode: rfc
+    function_module: BAPI_MATERIAL_GET_DETAIL
+    parameters: [material]
+    rfc_names: {material: MATERIAL}
+    input_schema:
+      type: object
+      properties:
+        material: {type: string, pattern: "^[A-Za-z0-9\\-_]{1,40}$"}
+      required: [material]
+    risk_level: low
+    read_only: true
+    requires_approval: false
+    required_scopes: [sap.materials.read]

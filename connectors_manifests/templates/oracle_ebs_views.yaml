@@ -1,0 +1,28 @@
+# TEMPLATE. Use a published, read-only custom view created for this integration.
+connector:
+  name: oracle_ebs_orders
+  type: odbc
+  version: 0.1.0
+  status: template
+
+connection:
+  secret_ref: oracle_ebs_readonly_db
+  sql_dialect: oracle
+  timeout_seconds: 10
+  max_rows: 100
+
+operations:
+  get_order_status:
+    description: Return status for one order number. Read-only.
+    mode: select
+    query: "SELECT ORDER_NUMBER, ORDER_STATUS, LAST_UPDATE_DATE FROM APPS.XX_MCP_ORDER_STATUS_V WHERE ORDER_NUMBER = :order_number"
+    parameters: [order_number]
+    input_schema:
+      type: object
+      properties:
+        order_number: {type: string, pattern: "^[A-Z0-9-]{3,30}$"}
+      required: [order_number]
+    risk_level: low
+    read_only: true
+    requires_approval: false
+    required_scopes: [ebs.orders.read]

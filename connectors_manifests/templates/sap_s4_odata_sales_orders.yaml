@@ -1,0 +1,50 @@
+# TEMPLATE. Confirm the service path and entity names in the SAP Gateway catalog (/IWFND/MAINT_SERVICE).
+connector:
+  name: sap_s4_sales
+  type: odata
+  version: 0.1.0
+  status: template
+
+connection:
+  base_url: https://s4.example.internal/sap/opu/odata/sap/API_SALES_ORDER_SRV
+  auth_scheme: basic
+  username: SVC_CHUSKY
+  secret_ref: sap_s4_password
+  timeout_seconds: 15
+  max_rows: 50
+
+operations:
+  get_sales_order:
+    description: Read one sales order by number. Read-only.
+    mode: read
+    entity_set: A_SalesOrder
+    key_parameter: sales_order
+    parameters: [sales_order]
+    select: [SalesOrder, SoldToParty, OverallSDProcessStatus]
+    input_schema:
+      type: object
+      properties:
+        sales_order: {type: string, pattern: "^[0-9]{1,10}$"}
+      required: [sales_order]
+    risk_level: low
+    read_only: true
+    requires_approval: false
+    required_scopes: [sap.salesorders.read]
+
+  list_sales_orders_for_customer:
+    description: List sales orders for one sold-to party. Read-only.
+    mode: list
+    entity_set: A_SalesOrder
+    parameters: [sold_to_party]
+    select: [SalesOrder, SoldToParty, OverallSDProcessStatus]
+    filters:
+      - {field: SoldToParty, parameter: sold_to_party, op: eq}
+    input_schema:
+      type: object
+      properties:
+        sold_to_party: {type: string, pattern: "^[0-9]{1,10}$"}
+      required: [sold_to_party]
+    risk_level: low
+    read_only: true
+    requires_approval: false
+    required_scopes: [sap.salesorders.read]

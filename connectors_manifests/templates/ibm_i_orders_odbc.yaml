@@ -1,0 +1,28 @@
+# TEMPLATE. Replace PRODLIB.CUSMAST and columns with the names found in discovery, then set status to active.
+connector:
+  name: ibm_i_customers
+  type: odbc
+  version: 0.1.0
+  status: template
+
+connection:
+  secret_ref: ibm_i_customers_db       # CHUSKY_SECRET_IBM_I_CUSTOMERS_DB holds the ODBC connection string
+  sql_dialect: null
+  timeout_seconds: 10
+  max_rows: 100
+
+operations:
+  get_customer_by_number:
+    description: Look up one customer record by customer number. Read-only.
+    mode: select
+    query: "SELECT CUSNO, CUSNAM, BALANCE FROM PRODLIB.CUSMAST WHERE CUSNO = :customer_number"
+    parameters: [customer_number]
+    input_schema:
+      type: object
+      properties:
+        customer_number: {type: string, pattern: "^[0-9]{1,10}$"}
+      required: [customer_number]
+    risk_level: low
+    read_only: true
+    requires_approval: false
+    required_scopes: [ibm_i.customers.read]

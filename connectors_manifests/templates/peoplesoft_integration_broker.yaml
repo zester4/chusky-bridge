@@ -1,0 +1,29 @@
+# TEMPLATE. Place the service WSDL in the approved WSDL directory (CHUSKY_WSDL_DIR, default /etc/chusky-bridge/wsdl).
+connector:
+  name: peoplesoft_customers
+  type: soap
+  version: 0.1.0
+  status: template
+
+connection:
+  wsdl_path: peoplesoft_customer.wsdl
+  allowed_hosts: [ps.example.internal]
+  username: svc_chusky-bridge
+  secret_ref: peoplesoft_ws_password
+  timeout_seconds: 15
+
+operations:
+  get_customer:
+    description: Fetch customer details by customer ID. Read-only.
+    mode: soap_operation
+    soap_operation: GetCustomer        # replace with the operation name from the WSDL
+    parameters: [customer_id]
+    input_schema:
+      type: object
+      properties:
+        customer_id: {type: string, pattern: "^[A-Z0-9]{4,20}$"}
+      required: [customer_id]
+    risk_level: low
+    read_only: true
+    requires_approval: false
+    required_scopes: [peoplesoft.customers.read]

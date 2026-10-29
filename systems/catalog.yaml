@@ -1,0 +1,219 @@
+# Chusky Bridge system catalog.
+#
+# Each entry names a system and the adapter expected to reach it. Mappings follow commonly documented
+# vendor integration interfaces. Every entry is UNVERIFIED until a connector has been tested against a
+# real instance of that product and version. Licensing, enabled modules, and version change what is
+# available, so confirm the interface your installation actually exposes.
+#
+# era: legacy (mainframe, midrange, or 10+ years old), midlife (5-10 years), modern (cloud or current on-prem)
+# adapter: one of the adapters in chusky_bridge/connectors (see docs/adapters.md)
+systems:
+  # ---------- ERP ----------
+  - {name: "SAP ECC 6.0", vendor: SAP, category: erp, era: legacy, adapter: sap_rfc, notes: "BAPI and RFC calls; OData through SAP Gateway where activated"}
+  - {name: "SAP R/3 4.6C", vendor: SAP, category: erp, era: legacy, adapter: sap_rfc, notes: "Older RFC release; confirm each BAPI exists in your release"}
+  - {name: "SAP S/4HANA On-Premise", vendor: SAP, category: erp, era: modern, adapter: odata, notes: "OData V2 and V4 APIs through SAP Gateway"}
+  - {name: "SAP Business One", vendor: SAP, category: erp, era: midlife, adapter: odata, notes: "Service Layer (OData-style REST)"}
+  - {name: "SAP Extended Warehouse Management", vendor: SAP, category: supply_chain, era: midlife, adapter: odata, notes: "OData services for warehouse tasks and stock"}
+  - {name: "SAP Transportation Management", vendor: SAP, category: supply_chain, era: midlife, adapter: odata, notes: "OData services for shipments and freight orders"}
+  - {name: "SAP IS-U (Utilities)", vendor: SAP, category: utilities, era: legacy, adapter: sap_rfc, notes: "Utilities industry BAPIs and RFCs"}
+  - {name: "Oracle E-Business Suite 12.2", vendor: Oracle, category: erp, era: legacy, adapter: odbc, notes: "Read published interface views; concurrent programs need vendor APIs"}
+  - {name: "Oracle Fusion Cloud ERP", vendor: Oracle, category: erp, era: modern, adapter: rest, notes: "Fusion REST resources"}
+  - {name: "Oracle PeopleSoft (FSCM, HCM, Campus)", vendor: Oracle, category: erp, era: legacy, adapter: soap, notes: "Integration Broker SOAP services"}
+  - {name: "JD Edwards EnterpriseOne", vendor: Oracle, category: erp, era: legacy, adapter: odbc, notes: "Read data through published views; orchestrator for writes"}
+  - {name: "JD Edwards World (AS/400)", vendor: Oracle, category: erp, era: legacy, adapter: odbc, notes: "Db2 for i through the IBM i ODBC driver"}
+  - {name: "Infor LN (Baan)", vendor: Infor, category: erp, era: legacy, adapter: odbc, notes: "Read-only views; BOD or ION for business documents"}
+  - {name: "Infor M3", vendor: Infor, category: erp, era: midlife, adapter: rest, notes: "M3 REST and API services"}
+  - {name: "Infor SyteLine (CloudSuite Industrial)", vendor: Infor, category: erp, era: midlife, adapter: odbc, notes: "Reporting database views; confirm the API module"}
+  - {name: "Infor Lawson", vendor: Infor, category: erp, era: legacy, adapter: soap, notes: "Lawson S3 web services"}
+  - {name: "Epicor Vantage", vendor: Epicor, category: erp, era: legacy, adapter: odbc, notes: "SQL views; BOD for business documents"}
+  - {name: "Epicor Kinetic", vendor: Epicor, category: erp, era: midlife, adapter: rest, notes: "Kinetic REST API"}
+  - {name: "Microsoft Dynamics AX 2012", vendor: Microsoft, category: erp, era: legacy, adapter: soap, notes: "AIF document and custom services; SQL views for reads"}
+  - {name: "Microsoft Dynamics GP", vendor: Microsoft, category: erp, era: legacy, adapter: odbc, notes: "Read SQL tables and views; eConnect for writes (planned)"}
+  - {name: "Microsoft Dynamics NAV", vendor: Microsoft, category: erp, era: midlife, adapter: odata, notes: "OData web services"}
+  - {name: "Microsoft Dynamics 365 Finance and Operations", vendor: Microsoft, category: erp, era: modern, adapter: odata, notes: "OData entities"}
+  - {name: "Sage 100", vendor: Sage, category: erp, era: legacy, adapter: odbc, notes: "Read Btrieve or SQL data through ODBC; confirm edition"}
+  - {name: "Sage 300", vendor: Sage, category: erp, era: midlife, adapter: odbc, notes: "SQL Server backend through ODBC"}
+  - {name: "Sage X3", vendor: Sage, category: erp, era: midlife, adapter: soap, notes: "SOAP web services"}
+  - {name: "Sage Intacct", vendor: Sage, category: finance, era: modern, adapter: rest, notes: "XML gateway; confirm REST availability"}
+  - {name: "QAD Enterprise Applications", vendor: QAD, category: erp, era: midlife, adapter: odbc, notes: "Progress OpenEdge data through ODBC or API"}
+  - {name: "Unit4 Agresso", vendor: Unit4, category: erp, era: midlife, adapter: soap, notes: "Agresso web services"}
+  - {name: "IFS Applications", vendor: IFS, category: erp, era: midlife, adapter: odata, notes: "OData projections"}
+  - {name: "Deltek Costpoint", vendor: Deltek, category: erp, era: midlife, adapter: odbc, notes: "Read reporting views"}
+  - {name: "Deltek Maconomy", vendor: Deltek, category: erp, era: midlife, adapter: rest, notes: "Maconomy REST API"}
+  - {name: "Acumatica", vendor: Acumatica, category: erp, era: modern, adapter: rest, notes: "REST API and OData"}
+  - {name: "NetSuite", vendor: Oracle, category: erp, era: modern, adapter: rest, notes: "SuiteTalk REST"}
+  - {name: "Ross Systems", vendor: Ross, category: erp, era: legacy, adapter: odbc, notes: "Read-only SQL views"}
+
+  # ---------- CRM ----------
+  - {name: "Siebel CRM", vendor: Oracle, category: crm, era: legacy, adapter: soap, notes: "Siebel Web Services for business components"}
+  - {name: "Microsoft Dynamics CRM 2011-2016 (on-premises)", vendor: Microsoft, category: crm, era: midlife, adapter: odata, notes: "OData endpoint"}
+  - {name: "Dynamics 365 Sales", vendor: Microsoft, category: crm, era: modern, adapter: odata, notes: "Dataverse Web API (OData)"}
+  - {name: "Salesforce", vendor: Salesforce, category: crm, era: modern, adapter: rest, notes: "REST and SOAP APIs; use REST"}
+  - {name: "SugarCRM", vendor: SugarCRM, category: crm, era: midlife, adapter: rest, notes: "REST v11 API"}
+  - {name: "SAP CRM (ECC based)", vendor: SAP, category: crm, era: legacy, adapter: sap_rfc, notes: "CRM BAPIs"}
+  - {name: "Oracle CX Sales", vendor: Oracle, category: crm, era: modern, adapter: rest, notes: "REST resources"}
+
+  # ---------- Banking and core ----------
+  - {name: "FIS Profile", vendor: FIS, category: banking, era: legacy, adapter: sftp, notes: "Batch and file interfaces; core APIs through vendor middleware"}
+  - {name: "FIS Systematics", vendor: FIS, category: banking, era: legacy, adapter: sftp, notes: "Batch files and reports; vendor integration layer for online access"}
+  - {name: "Fiserv DNA", vendor: Fiserv, category: banking, era: legacy, adapter: sftp, notes: "Batch and file exchange; vendor APIs where licensed"}
+  - {name: "Fiserv Premier", vendor: Fiserv, category: banking, era: legacy, adapter: sftp, notes: "Batch and file exchange"}
+  - {name: "Jack Henry SilverLake", vendor: Jack Henry, category: banking, era: legacy, adapter: sftp, notes: "Batch and file exchange; vendor APIs where licensed"}
+  - {name: "Jack Henry Symitar (Episys)", vendor: Jack Henry, category: banking, era: legacy, adapter: sftp, notes: "Batch and file exchange"}
+  - {name: "Jack Henry Hogan", vendor: Jack Henry, category: banking, era: legacy, adapter: sftp, notes: "Batch files on IBM i or mainframe"}
+  - {name: "Temenos T24 (Transact)", vendor: Temenos, category: banking, era: midlife, adapter: soap, notes: "T24 web services and Connect"}
+  - {name: "Temenos Transact (Infinity)", vendor: Temenos, category: banking, era: modern, adapter: rest, notes: "REST APIs"}
+  - {name: "Infosys Finacle", vendor: Infosys, category: banking, era: midlife, adapter: rest, notes: "Finacle integration APIs"}
+  - {name: "Oracle FLEXCUBE", vendor: Oracle, category: banking, era: midlife, adapter: rest, notes: "REST services"}
+  - {name: "TCS BaNCS", vendor: TCS, category: banking, era: midlife, adapter: rest, notes: "BaNCS integration APIs"}
+  - {name: "Sopra Banking Amplitude", vendor: Sopra Steria, category: banking, era: midlife, adapter: soap, notes: "Web services"}
+  - {name: "Finastra Fusion Banking (Misys)", vendor: Finastra, category: banking, era: midlife, adapter: soap, notes: "Fusion web services"}
+  - {name: "Mambu", vendor: Mambu, category: banking, era: modern, adapter: rest, notes: "Public REST API"}
+  - {name: "SWIFT Alliance Access", vendor: SWIFT, category: payments, era: legacy, adapter: swift, notes: "Requires SWIFT connectivity membership"}
+  - {name: "ACH and NACHA file processing", vendor: Various, category: payments, era: legacy, adapter: sftp, notes: "NACHA-formatted fixed-width files"}
+  - {name: "Fedwire ISO 20022 migration", vendor: Federal Reserve, category: payments, era: modern, adapter: sftp, notes: "ISO 20022 XML files"}
+  - {name: "SEPA pain and camt messages", vendor: EPC, category: payments, era: modern, adapter: sftp, notes: "ISO 20022 XML files"}
+
+  # ---------- Insurance ----------
+  - {name: "Guidewire PolicyCenter", vendor: Guidewire, category: insurance, era: midlife, adapter: rest, notes: "Cloud and on-prem REST APIs"}
+  - {name: "Guidewire ClaimCenter", vendor: Guidewire, category: insurance, era: midlife, adapter: rest, notes: "Cloud and on-prem REST APIs"}
+  - {name: "Guidewire BillingCenter", vendor: Guidewire, category: insurance, era: midlife, adapter: rest, notes: "Cloud and on-prem REST APIs"}
+  - {name: "Duck Creek Policy", vendor: Duck Creek, category: insurance, era: midlife, adapter: rest, notes: "REST APIs"}
+  - {name: "Majesco Policy", vendor: Majesco, category: insurance, era: midlife, adapter: rest, notes: "REST APIs"}
+  - {name: "Sapiens Core", vendor: Sapiens, category: insurance, era: midlife, adapter: rest, notes: "REST APIs"}
+  - {name: "Applied Epic", vendor: Applied Systems, category: insurance, era: midlife, adapter: odbc, notes: "Reporting data through ODBC; confirm the approved read path"}
+  - {name: "Vertafore AMS360", vendor: Vertafore, category: insurance, era: legacy, adapter: odbc, notes: "Read reporting database"}
+  - {name: "Insurity", vendor: Insurity, category: insurance, era: midlife, adapter: soap, notes: "SOAP services"}
+  - {name: "Ebix", vendor: Ebix, category: insurance, era: legacy, adapter: soap, notes: "SOAP services"}
+
+  # ---------- Healthcare ----------
+  - {name: "Epic (Hyperspace, Bridges, FHIR)", vendor: Epic, category: healthcare, era: modern, adapter: fhir, notes: "FHIR R4 APIs; OAuth through SMART Backend Services; app registration required"}
+  - {name: "Epic Clarity and Caboodle", vendor: Epic, category: healthcare, era: modern, adapter: odbc, notes: "Reporting warehouse; read-only accounts"}
+  - {name: "Oracle Health (Cerner Millennium)", vendor: Oracle, category: healthcare, era: modern, adapter: fhir, notes: "FHIR R4 APIs; OAuth required"}
+  - {name: "MEDITECH Expanse", vendor: MEDITECH, category: healthcare, era: modern, adapter: fhir, notes: "FHIR APIs; confirm enabled resources"}
+  - {name: "MEDITECH Magic", vendor: MEDITECH, category: healthcare, era: legacy, adapter: mllp, notes: "HL7 v2 interfaces"}
+  - {name: "Allscripts Sunrise", vendor: Veradigm, category: healthcare, era: legacy, adapter: mllp, notes: "HL7 v2 interfaces"}
+  - {name: "NextGen Healthcare", vendor: NextGen, category: healthcare, era: midlife, adapter: mllp, notes: "HL7 v2 and vendor APIs"}
+  - {name: "eClinicalWorks", vendor: eCW, category: healthcare, era: midlife, adapter: fhir, notes: "FHIR APIs"}
+  - {name: "athenahealth", vendor: athenahealth, category: healthcare, era: modern, adapter: rest, notes: "athenaNet REST API"}
+  - {name: "McKesson Paragon", vendor: McKesson, category: healthcare, era: legacy, adapter: mllp, notes: "HL7 v2 interfaces"}
+  - {name: "InterSystems TrakCare and HealthShare", vendor: InterSystems, category: healthcare, era: midlife, adapter: fhir, notes: "FHIR server and HL7 v2"}
+  - {name: "GE Centricity EMR", vendor: GE HealthCare, category: healthcare, era: legacy, adapter: mllp, notes: "HL7 v2 interfaces"}
+  - {name: "Sunquest and Beaker LIS", vendor: Sunquest, category: healthcare, era: legacy, adapter: mllp, notes: "HL7 v2 result and order messages"}
+  - {name: "Omnicell pharmacy", vendor: Omnicell, category: healthcare, era: midlife, adapter: mllp, notes: "HL7 v2 interfaces"}
+  - {name: "Mirth Connect interface engine", vendor: NextGen, category: integration, era: midlife, adapter: mllp, notes: "Channels over MLLP and file"}
+  - {name: "Corepoint Health Integration Engine", vendor: Corepoint, category: integration, era: midlife, adapter: mllp, notes: "HL7 v2 over MLLP and file"}
+  - {name: "Rhapsody integration engine", vendor: Lumen, category: integration, era: midlife, adapter: mllp, notes: "HL7 v2 over MLLP"}
+  - {name: "Infor Cloverleaf", vendor: Infor, category: integration, era: midlife, adapter: mllp, notes: "HL7 v2 over MLLP"}
+  - {name: "Philips IntelliSpace Cardiovascular", vendor: Philips, category: healthcare, era: midlife, adapter: dicom, notes: "DICOM query and retrieve"}
+  - {name: "Sectra PACS", vendor: Sectra, category: healthcare, era: modern, adapter: dicom, notes: "DICOM C-FIND and C-MOVE"}
+  - {name: "Agfa Enterprise Imaging", vendor: Agfa, category: healthcare, era: midlife, adapter: dicom, notes: "DICOM and vendor APIs"}
+
+  # ---------- Government, HR, payroll ----------
+  - {name: "Tyler Munis", vendor: Tyler Technologies, category: government, era: midlife, adapter: odbc, notes: "Reporting database views"}
+  - {name: "Tyler EnerGov", vendor: Tyler Technologies, category: government, era: midlife, adapter: odbc, notes: "Reporting database views"}
+  - {name: "Accela Civic Platform", vendor: Accela, category: government, era: modern, adapter: rest, notes: "Civic Platform REST APIs"}
+  - {name: "Oracle Public Sector Financials", vendor: Oracle, category: government, era: legacy, adapter: odbc, notes: "Published reporting views"}
+  - {name: "CGI Advantage", vendor: CGI, category: government, era: legacy, adapter: odbc, notes: "Database views through ODBC"}
+  - {name: "Workday HCM", vendor: Workday, category: hr, era: modern, adapter: rest, notes: "REST and SOAP; use REST where available"}
+  - {name: "UKG Pro", vendor: UKG, category: hr, era: modern, adapter: rest, notes: "REST API"}
+  - {name: "UKG Kronos Workforce Central", vendor: UKG, category: hr, era: legacy, adapter: sftp, notes: "Scheduled export files"}
+  - {name: "ADP Workforce Now", vendor: ADP, category: hr, era: midlife, adapter: rest, notes: "ADP Marketplace APIs"}
+  - {name: "Ceridian Dayforce", vendor: Ceridian, category: hr, era: modern, adapter: rest, notes: "REST API"}
+  - {name: "Oracle HCM Cloud", vendor: Oracle, category: hr, era: modern, adapter: rest, notes: "REST resources"}
+
+  # ---------- Supply chain, WMS, TMS ----------
+  - {name: "Manhattan Associates WMS", vendor: Manhattan, category: supply_chain, era: midlife, adapter: soap, notes: "SOAP and REST integration services"}
+  - {name: "Blue Yonder (JDA) WMS", vendor: Blue Yonder, category: supply_chain, era: midlife, adapter: soap, notes: "SOAP services"}
+  - {name: "Oracle WMS Cloud", vendor: Oracle, category: supply_chain, era: modern, adapter: rest, notes: "REST APIs"}
+  - {name: "Infor WMS", vendor: Infor, category: supply_chain, era: midlife, adapter: rest, notes: "REST APIs"}
+  - {name: "Descartes", vendor: Descartes, category: supply_chain, era: midlife, adapter: sftp, notes: "Batch EDI and file exchange"}
+  - {name: "E2open", vendor: E2open, category: supply_chain, era: modern, adapter: rest, notes: "REST APIs"}
+  - {name: "Oracle Transportation Management", vendor: Oracle, category: supply_chain, era: midlife, adapter: rest, notes: "REST services"}
+  - {name: "McLeod LoadMaster", vendor: McLeod Software, category: supply_chain, era: legacy, adapter: odbc, notes: "Reporting database views"}
+  - {name: "TMW Suite", vendor: TMW Systems, category: supply_chain, era: legacy, adapter: odbc, notes: "Reporting database views"}
+
+  # ---------- Manufacturing and industrial ----------
+  - {name: "Rockwell FactoryTalk", vendor: Rockwell, category: manufacturing, era: midlife, adapter: opcua, notes: "OPC UA server for tag reads"}
+  - {name: "Siemens Teamcenter", vendor: Siemens, category: manufacturing, era: midlife, adapter: rest, notes: "Teamcenter REST services"}
+  - {name: "Siemens Opcenter MES", vendor: Siemens, category: manufacturing, era: midlife, adapter: rest, notes: "REST APIs"}
+  - {name: "AVEVA System Platform (Wonderware)", vendor: AVEVA, category: industrial, era: midlife, adapter: opcua, notes: "OPC UA server"}
+  - {name: "GE Digital iFIX", vendor: GE Digital, category: industrial, era: legacy, adapter: opcua, notes: "OPC UA server where enabled"}
+  - {name: "Ignition (Inductive Automation)", vendor: Inductive Automation, category: industrial, era: modern, adapter: opcua, notes: "OPC UA and REST"}
+  - {name: "AVEVA PI System", vendor: AVEVA, category: industrial, era: midlife, adapter: rest, notes: "PI Web API"}
+  - {name: "Honeywell Experion", vendor: Honeywell, category: industrial, era: legacy, adapter: opcua, notes: "OPC UA where licensed"}
+  - {name: "Emerson DeltaV", vendor: Emerson, category: industrial, era: legacy, adapter: opcua, notes: "OPC UA where licensed"}
+  - {name: "Yokogawa CENTUM", vendor: Yokogawa, category: industrial, era: legacy, adapter: opcua, notes: "OPC UA where licensed"}
+  - {name: "Modbus TCP devices", vendor: Various, category: industrial, era: legacy, adapter: modbus, notes: "Register reads; no writes in scope"}
+  - {name: "Siemens Camstar MES", vendor: Siemens, category: manufacturing, era: midlife, adapter: rest, notes: "REST APIs"}
+
+  # ---------- Mainframe and midrange ----------
+  - {name: "IBM z/OS CICS transactions", vendor: IBM, category: mainframe, era: legacy, adapter: tn3270, notes: "Screen-based transactions; CICS Transaction Gateway is an alternative"}
+  - {name: "IBM z/OS IMS", vendor: IBM, category: mainframe, era: legacy, adapter: tn3270, notes: "IMS transactions through 3270 screens or vendor gateway"}
+  - {name: "IBM Db2 for z/OS", vendor: IBM, category: mainframe, era: legacy, adapter: odbc, notes: "Db2 Connect or ODBC driver"}
+  - {name: "IBM z/OS flat files and VSAM exports", vendor: IBM, category: mainframe, era: legacy, adapter: sftp, notes: "Batch extracts to fixed-width or CSV"}
+  - {name: "IBM Db2 for i (AS/400, iSeries)", vendor: IBM, category: midrange, era: legacy, adapter: odbc, notes: "IBM i Access ODBC driver"}
+  - {name: "IBM Informix", vendor: IBM, category: database, era: legacy, adapter: odbc, notes: "Informix ODBC driver"}
+  - {name: "Unisys ClearPath MCP", vendor: Unisys, category: mainframe, era: legacy, adapter: tn3270, notes: "Terminal sessions; confirm the emulation supported"}
+  - {name: "HPE NonStop (Tandem) SQL/MP", vendor: HPE, category: mainframe, era: legacy, adapter: odbc, notes: "NonStop SQL ODBC"}
+  - {name: "Micro Focus Enterprise Server", vendor: Micro Focus, category: mainframe, era: midlife, adapter: tn3270, notes: "COBOL CICS terminal interface"}
+  - {name: "Progress OpenEdge", vendor: Progress, category: database, era: midlife, adapter: odbc, notes: "OpenEdge ODBC"}
+  - {name: "Pick and jBASE", vendor: Rocket Software, category: midrange, era: legacy, adapter: odbc, notes: "Pick ODBC or export files"}
+  - {name: "Software AG Adabas", vendor: Software AG, category: database, era: legacy, adapter: sftp, notes: "Batch extracts; Adabas SQL gateway for reads"}
+  - {name: "CA Datacom", vendor: Broadcom, category: database, era: legacy, adapter: odbc, notes: "Datacom SQL gateway; confirm driver"}
+  - {name: "Teradata", vendor: Teradata, category: database, era: midlife, adapter: odbc, notes: "Teradata ODBC driver"}
+  - {name: "Sybase ASE", vendor: SAP, category: database, era: legacy, adapter: odbc, notes: "Sybase ODBC driver"}
+  - {name: "Oracle Database 11g to 19c", vendor: Oracle, category: database, era: legacy, adapter: odbc, notes: "Oracle ODBC driver; read-only accounts"}
+  - {name: "Microsoft SQL Server 2008 to 2019", vendor: Microsoft, category: database, era: legacy, adapter: sql_server, notes: "Stored procedures; ODBC for views"}
+  - {name: "MySQL and MariaDB", vendor: Oracle, category: database, era: midlife, adapter: odbc, notes: "MySQL ODBC driver"}
+  - {name: "PostgreSQL", vendor: PostgreSQL, category: database, era: modern, adapter: postgres, notes: "Read-only functions"}
+  - {name: "Firebird", vendor: Firebird, category: database, era: legacy, adapter: odbc, notes: "Firebird ODBC driver"}
+  - {name: "Microsoft Access (mdb and accdb)", vendor: Microsoft, category: desktop, era: legacy, adapter: odbc, notes: "Access ODBC driver; file-based"}
+  - {name: "FileMaker Pro", vendor: Claris, category: database, era: legacy, adapter: rest, notes: "FileMaker Data API"}
+
+  # ---------- Messaging and integration middleware ----------
+  - {name: "IBM MQ", vendor: IBM, category: messaging, era: legacy, adapter: ibm_mq, notes: "Browse via the ibm_mq adapter (pymqi)"}
+  - {name: "TIBCO EMS", vendor: TIBCO, category: messaging, era: midlife, adapter: queue_gateway, notes: "Via the JMS messaging gateway"}
+  - {name: "TIBCO BusinessWorks", vendor: TIBCO, category: integration, era: midlife, adapter: soap, notes: "SOAP and REST service endpoints"}
+  - {name: "IBM App Connect Enterprise (Integration Bus)", vendor: IBM, category: integration, era: midlife, adapter: soap, notes: "SOAP and REST endpoints"}
+  - {name: "Oracle Service Bus", vendor: Oracle, category: integration, era: midlife, adapter: soap, notes: "Proxy services exposed as SOAP"}
+  - {name: "webMethods Integration", vendor: Software AG, category: integration, era: midlife, adapter: soap, notes: "SOAP and REST services"}
+  - {name: "MuleSoft Anypoint", vendor: Salesforce, category: integration, era: modern, adapter: rest, notes: "API endpoints"}
+  - {name: "Dell Boomi", vendor: Boomi, category: integration, era: modern, adapter: rest, notes: "Boomi AtomSphere API"}
+  - {name: "Apache Kafka", vendor: Apache, category: messaging, era: modern, adapter: kafka, notes: "Read-only peek by partition and offset"}
+  - {name: "RabbitMQ", vendor: Broadcom, category: messaging, era: modern, adapter: rabbitmq, notes: "Peek via the rabbitmq adapter (AMQP)"}
+  - {name: "Microsoft MSMQ", vendor: Microsoft, category: messaging, era: legacy, adapter: queue_gateway, notes: "Via the Windows queue gateway"}
+  - {name: "Azure Service Bus", vendor: Microsoft, category: messaging, era: modern, adapter: rest, notes: "Management and peek REST API"}
+
+  # ---------- EDI and B2B ----------
+  - {name: "IBM Sterling B2B Integrator", vendor: IBM, category: edi, era: midlife, adapter: sftp, notes: "X12 and EDIFACT exports over SFTP"}
+  - {name: "OpenText Trading Grid (GXS)", vendor: OpenText, category: edi, era: midlife, adapter: sftp, notes: "X12 files over SFTP"}
+  - {name: "Cleo Integration Cloud", vendor: Cleo, category: edi, era: modern, adapter: sftp, notes: "X12 files over SFTP"}
+  - {name: "SPS Commerce", vendor: SPS Commerce, category: edi, era: modern, adapter: sftp, notes: "X12 files over SFTP"}
+
+  # ---------- Content and documents ----------
+  - {name: "OpenText Documentum", vendor: OpenText, category: content, era: legacy, adapter: rest, notes: "REST services (D2 or REST API)"}
+  - {name: "OpenText Content Server", vendor: OpenText, category: content, era: midlife, adapter: rest, notes: "REST API"}
+  - {name: "IBM FileNet P8", vendor: IBM, category: content, era: legacy, adapter: rest, notes: "CMIS or REST API"}
+  - {name: "Hyland OnBase", vendor: Hyland, category: content, era: midlife, adapter: rest, notes: "OnBase REST API"}
+  - {name: "Alfresco", vendor: Alfresco, category: content, era: midlife, adapter: rest, notes: "CMIS and REST"}
+  - {name: "SharePoint Server 2013 to 2019", vendor: Microsoft, category: content, era: midlife, adapter: rest, notes: "SharePoint REST"}
+  - {name: "Laserfiche", vendor: Laserfiche, category: content, era: midlife, adapter: rest, notes: "Laserfiche REST API"}
+  - {name: "M-Files", vendor: M-Files, category: content, era: midlife, adapter: rest, notes: "M-Files REST API"}
+
+  # ---------- Desktop, groupware, custom ----------
+  - {name: "Visual Basic 6 and Delphi desktop applications", vendor: Various, category: desktop, era: legacy, adapter: rpa, notes: "UI automation (rpa adapter); prefer the database behind the app"}
+  - {name: "Citrix-published legacy applications", vendor: Citrix, category: desktop, era: legacy, adapter: rpa, notes: "UI automation (rpa adapter)"}
+  - {name: "HCL Domino (Lotus Notes)", vendor: HCL, category: groupware, era: legacy, adapter: rest, notes: "Domino REST API"}
+  - {name: "Microsoft Exchange 2013 to 2016 (on-premises)", vendor: Microsoft, category: groupware, era: midlife, adapter: soap, notes: "EWS SOAP"}
+  - {name: "Custom .NET and Java internal APIs", vendor: Various, category: custom, era: modern, adapter: rest, notes: "Any REST service with an HTTPS origin"}
+  - {name: "Homegrown SQL Server applications", vendor: Various, category: custom, era: legacy, adapter: sql_server, notes: "Named procedures"}
+
+  # ---------- Retail, POS, telecom, property ----------
+  - {name: "Oracle Retail Xstore", vendor: Oracle, category: retail, era: modern, adapter: rest, notes: "Xstore services"}
+  - {name: "NCR Aloha", vendor: NCR, category: retail, era: legacy, adapter: sftp, notes: "Export files"}
+  - {name: "Oracle Simphony", vendor: Oracle, category: retail, era: modern, adapter: rest, notes: "Simphony APIs"}
+  - {name: "Amdocs CES", vendor: Amdocs, category: telecom, era: midlife, adapter: soap, notes: "SOAP interfaces"}
+  - {name: "Oracle Billing and Revenue Management", vendor: Oracle, category: telecom, era: midlife, adapter: soap, notes: "Web services"}
+  - {name: "Yardi Voyager", vendor: Yardi, category: property, era: midlife, adapter: soap, notes: "Interface SOAP services"}
+  - {name: "MRI Software", vendor: MRI, category: property, era: midlife, adapter: sftp, notes: "Batch interface files"}

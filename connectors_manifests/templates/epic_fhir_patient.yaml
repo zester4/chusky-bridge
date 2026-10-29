@@ -1,0 +1,31 @@
+# TEMPLATE. Requires a registered app with the EHR vendor and a SMART Backend Services token
+# (placed in CHUSKY_SECRET_EPIC_FHIR_TOKEN). Tokens expire and must be refreshed by a separate job.
+connector:
+  name: epic_patients
+  type: fhir
+  version: 0.1.0
+  status: template
+
+connection:
+  base_url: https://fhir.example-health.org/api/FHIR/R4   # the vendor's FHIR R4 base
+  auth_scheme: bearer
+  secret_ref: epic_fhir_token
+  timeout_seconds: 10
+  max_rows: 25
+
+operations:
+  find_patient_by_identifier:
+    description: Find patients by identifier (MRN). Returns FHIR Patient resources. Clinical data; restricted scope.
+    mode: search
+    resource: Patient
+    parameters: [mrn]
+    search_parameters: {mrn: identifier}
+    input_schema:
+      type: object
+      properties:
+        mrn: {type: string, pattern: "^[A-Za-z0-9|:.\\-]{1,64}$"}
+      required: [mrn]
+    risk_level: medium
+    read_only: true
+    requires_approval: false
+    required_scopes: [fhir.patient.read]
